@@ -2,7 +2,7 @@
 
 > My server and development environment configuration files.
 
-![](https://img.shields.io/github/license/SukkaW/dotfiles.svg?style=flat-square) ![Author](https://img.shields.io/badge/Author-Otstar%20Lin-blue.svg?style=flat-square)
+![](https://img.shields.io/github/license/syfxlin/initMyServer.svg?style=flat-square) ![Author](https://img.shields.io/badge/Author-Otstar%20Lin-blue.svg?style=flat-square)
 
 ## 使用方法 Usage
 
