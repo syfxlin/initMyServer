@@ -64,8 +64,10 @@ installZsh() {
     echo "export TERM=xterm-256color" >> ~/.zshrc
     source ~/.zshrc
     # install thefuck
-    apt install python3-dev python3-pip python3-setuptools
+    apt install python3-dev python3-pip python3-setuptools -y
     pip3 install thefuck
+    echo "eval \$(thefuck --alias)" >> ~/.zshrc
+    source ~/.zshrc
 }
 installDocker() {
     curl -sSL https://get.docker.com/ | sh
