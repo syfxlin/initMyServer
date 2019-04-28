@@ -63,6 +63,9 @@ installZsh() {
     sed -i 's|ZSH_THEME="robbyrussell"|ZSH_THEME="ys"|g' ~/.zshrc
     echo "export TERM=xterm-256color" >> ~/.zshrc
     source ~/.zshrc
+    # install thefuck
+    apt install python3-dev python3-pip python3-setuptools
+    pip3 install thefuck
 }
 installDocker() {
     curl -sSL https://get.docker.com/ | sh
