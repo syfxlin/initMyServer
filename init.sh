@@ -60,7 +60,7 @@ installZsh() {
     mv zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
     sed -i 's|plugins=(|plugins=(zsh-autosuggestions |g' ~/.zshrc
     echo "source \$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
-    sed -i 's|ZSH_THEME="robbyrussell"|ZSH_THEME="agnoster"|g' ~/.zshrc
+    sed -i 's|ZSH_THEME="robbyrussell"|ZSH_THEME="ys"|g' ~/.zshrc
     echo "export TERM=xterm-256color" >> ~/.zshrc
     source ~/.zshrc
 }
@@ -113,6 +113,25 @@ installPortainer() {
 installCodeServer() {
     docker run -it --name=code-server -p $1:8443 -p $2:$2 -v $3:/home/coder/project codercom/code-server --allow-http --password=$4
 }
+installWebSSH() {
+    cd dockerfiles/webssh
+    docker build -t syfxlin/webssh .
+    docker run -d -p $1:8092 --name=webssh syfxlin/webssh
+    cd ../../
+    echo "剩下您只需配置反向代理即可访问WebSSH"
+    echo "# Nginx config example"
+    echo "location / {"
+    echo "    proxy_pass http://127.0.0.1:8888;"
+    echo "    proxy_http_version 1.1;"
+    echo "    proxy_read_timeout 300;"
+    echo "    proxy_set_header Upgrade \$http_upgrade;"
+    echo "    proxy_set_header Connection \"upgrade\";"
+    echo "    proxy_set_header Host \$http_host;"
+    echo "    proxy_set_header X-Real-IP \$remote_addr;"
+    echo "    proxy_set_header X-Real-PORT \$remote_port;"
+    echo "}"
+}
+
 # main
 # until [ -z $1 ]
 # do
@@ -121,6 +140,10 @@ installCodeServer() {
 #     esac
 # shift
 # done
+while true
+do
+clear
+
 echo -e "------ Otstar-Cloud部署脚本 ------"
 echo -e ""
 echo -e "请选择你的操作"
@@ -133,6 +156,7 @@ echo -e "  ${YELLOW}6.${PLAIN} 安装Sonarqube(Docker)"
 echo -e "  ${YELLOW}7.${PLAIN} 安装Runcher(Docker)"
 echo -e "  ${YELLOW}8.${PLAIN} 安装Portainer(Docker)"
 echo -e "  ${YELLOW}9.${PLAIN} 安装CodeServer(Docker)"
+echo -e "  ${YELLOW}10.${PLAIN} 安装WebSSH(Docker)"
 echo -e "  ${YELLOW}q.${PLAIN} 退出"
 
 echo -e "请选择菜单:"
@@ -206,6 +230,13 @@ echo "请设置登陆密码"
 read passwd
 installCodeServer $httpport $otherport $directory $passwd
 
+elif [ $operate == "10" ];then
+echo "请输入HTTP端口:"
+read httpport
+installWebSSH $httpport
+
 elif [ $operate == "q" ];then
 exit 0
 fi
+
+done
